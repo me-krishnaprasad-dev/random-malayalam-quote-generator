@@ -4,6 +4,7 @@
   "description": "",
   "keywords": [],
   "main": "src/index.tsx",
+  "proxy": "http://localhost:8080",
   "dependencies": {
     "react": "^19.0.0",
     "react-dom": "^19.0.0",

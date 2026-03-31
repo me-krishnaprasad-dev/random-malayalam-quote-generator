@@ -10,7 +10,7 @@ const Quote = () => {
 
     const fetchAdvice = async () => {
         try {
-            const res = await fetch("http://localhost:8080/api/v1/quote/random");
+            const res = await fetch("/api/v1/quote/random");
             const json = await res.json();
             setResponse(json); // Corrected to update state with API response
         } catch (error) {
