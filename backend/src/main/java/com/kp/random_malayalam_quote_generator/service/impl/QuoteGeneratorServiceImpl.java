@@ -8,6 +8,7 @@ import com.kp.random_malayalam_quote_generator.dto.AdviceDTO;
 import com.kp.random_malayalam_quote_generator.dto.QuoteResponseDTO;
 import com.kp.random_malayalam_quote_generator.dto.SlipDTO;
 import com.kp.random_malayalam_quote_generator.repository.QuoteGeneratedCounterRepository;
+import com.kp.random_malayalam_quote_generator.service.GeminiTranslationService;
 import com.kp.random_malayalam_quote_generator.service.QuoteGeneratorService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +28,7 @@ public class QuoteGeneratorServiceImpl implements QuoteGeneratorService {
     private final QuoteGeneratedCounterRepository quoteGeneratedCounterRepository;
     private final QuoteClient quoteClient;
     private final ObjectMapper objectMapper;
+    private final GeminiTranslationService geminiTranslationService;
 
     @Override
     public QuoteResponseDTO getMyMalayalamQuote() {
@@ -55,10 +57,14 @@ public class QuoteGeneratorServiceImpl implements QuoteGeneratorService {
                 })
                 .orElse(null);
 
-        String malayalamQuote = Optional.ofNullable(slipDTO)
+        String englishQuote = Optional.ofNullable(slipDTO)
                 .map(SlipDTO::getSlip)
                 .map(AdviceDTO::getAdvice)
                 .orElse(SERVICE_UNAVAILABLE);
+
+        // Translate to Malayalam using Gemini AI
+        log.info("[+] Gemini ഉപയോഗിച്ച് മലയാളത്തിലേക്ക് പരിവർത്തനം ചെയ്യുന്നു...");
+        String malayalamQuote = geminiTranslationService.translateToMalayalam(englishQuote);
 
         counter.incrementCount();
         quoteGeneratedCounterRepository.save(counter);

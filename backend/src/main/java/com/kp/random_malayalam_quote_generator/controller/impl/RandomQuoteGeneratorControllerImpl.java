@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/v1/quote")
 @Slf4j
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "*")
 public class RandomQuoteGeneratorControllerImpl implements RandomQuoteGeneratorController {
 
     private final QuoteGeneratorService quoteGeneratorService;
